@@ -88,19 +88,21 @@
   </div>
 
   <form
-    action="https://buttondown.com/api/emails/embed-subscribe/kinskey"
-    method="post"
-    target="popupwindow"
-    onsubmit="window.open('https://buttondown.com/kinskey', 'popupwindow')"
-    class="findkey-signup"
-  >
-    <input
-      type="email"
-      name="email"
-      placeholder="Your email address"
-      required
-    />
-    <button type="submit">Get the weekly brief</button>
+   <form
+  action="https://buttondown.com/api/emails/embed-subscribe/findkey"
+  method="post"
+  class="embeddable-buttondown-form"
+  referrerpolicy="unsafe-url"
+>
+  <label for="bd-email">Enter your email</label>
+  <input type="email" name="email" id="bd-email" />
+  <input type="submit" value="Subscribe" />
+  <p>
+    <a href="https://buttondown.com/refer/findkey" target="_blank">
+      Powered by Buttondown.
+    </a>
+  </p>
+</form>
   </form>
 
   <div class="findkey-note">
