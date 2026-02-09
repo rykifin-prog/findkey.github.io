@@ -2,118 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Findkey</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Findkey — Clarity before the conversation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-  body {
-    font-family: "Times New Roman", Times, serif;
-    margin: 0;
-    padding: 4rem 3rem;
-    max-width: 720px;
-    background: #0f0f0f;
-    color: #f2f2f2;
-  }
+    /* Global reset */
+    * {
+      box-sizing: border-box;
+    }
 
-  .brand {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    color: #bdbdbd;
-  }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0e0e0e;
+      color: #ffffff;
+      font-family: "Times New Roman", Times, serif;
+    }
 
-  h1 {
-    font-size: 2.5rem;
-    font-weight: normal;
-    margin-bottom: 1rem;
-    color: #ffffff;
-  }
+    .container {
+      max-width: 720px;
+      padding: 80px 24px;
+    }
 
-  .tagline {
-    font-style: italic;
-    margin-bottom: 1.25rem;
-    color: #d6d6d6;
-  }
+    .brand {
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-bottom: 32px;
+    }
 
-  .description {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 1.75rem;
-    color: #e0e0e0;
-  }
+    h1 {
+      font-size: 2.6rem;
+      font-weight: normal;
+      margin: 0 0 12px 0;
+    }
 
-  .findkey-signup {
-    margin-top: 1.5rem;
-  }
+    .tagline {
+      font-style: italic;
+      opacity: 0.8;
+      margin-bottom: 24px;
+    }
 
-  .findkey-signup input {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 1rem;
-    padding: 0.6rem 0.75rem;
-    width: 260px;
-    max-width: 100%;
-    border: 1px solid #444;
-    background: #0f0f0f;
-    color: #ffffff;
-    margin-right: 0.5rem;
-  }
+    .description {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      margin-bottom: 36px;
+    }
 
-  .findkey-signup input::placeholder {
-    color: #888;
-  }
+    /* Signup form */
+    .findkey-signup {
+      margin-top: 24px;
+    }
 
-  .findkey-signup button {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 1rem;
-    padding: 0.6rem 0.9rem;
-    background: #ffffff;
-    color: #0f0f0f;
-    border: none;
-    cursor: pointer;
-  }
+    .findkey-signup input[type="email"] {
+      width: 100%;
+      max-width: 360px;
+      padding: 10px 12px;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1rem;
+      background: #111;
+      border: 1px solid #555;
+      color: #fff;
+      margin-right: 8px;
+    }
 
-  .findkey-signup button:hover {
-    opacity: 0.9;
-  }
+    .findkey-signup input::placeholder {
+      color: #aaa;
+    }
 
-  .findkey-note {
-    margin-top: 0.5rem
+    .findkey-signup input[type="submit"] {
+      margin-top: 12px;
+      padding: 10px 16px;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 0.95rem;
+      background: #ffffff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+    }
 
+    .findkey-signup input[type="submit"]:hover {
+      opacity: 0.85;
+    }
+
+    .findkey-note {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    a {
+      color: #888;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="brand">Findkey</div>
+  <div class="container">
+    <div class="brand">FINDKEY</div>
 
-  <h1>Clarity before the conversation.</h1>
+    <h1>Clarity before the conversation.</h1>
 
-  <div class="tagline">Civilizing Discourse.</div>
+    <div class="tagline">Civilizing Discourse.</div>
 
-  <div class="description">
-    A clear, balanced view of every side of an issue — so you understand where
-    others are coming from before you speak.
+    <div class="description">
+      A clear, balanced view of every side of an issue — so you understand
+      where others are coming from before you speak.
+    </div>
+
+    <div class="findkey-signup">
+      <form
+        action="https://buttondown.com/api/emails/embed-subscribe/findkey"
+        method="post"
+        referrerpolicy="unsafe-url"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+        <br />
+        <input type="submit" value="Get the weekly brief" />
+      </form>
+
+      <div class="findkey-note">
+        Email capture coming shortly.
+      </div>
+    </div>
   </div>
-
-  <form
- <form
-  action="https://buttondown.com/api/emails/embed-subscribe/findkey"
-  method="post"
-  target="popupwindow"
-  onsubmit="window.open('https://buttondown.com/findkey', 'popupwindow')"
-  class="findkey-signup"
->
-  <input
-    type="email"
-    name="email"
-    placeholder="Your email address"
-    required
-  />
-  <button type="submit">Get the weekly brief</button>
-</form>
-
-<div class="findkey-note">
-  One email per week. No noise. Unsubscribe anytime.
-</div>
-
 </body>
 </html>
