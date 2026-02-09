@@ -1,81 +1,156 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #000;
-  color: #fff;
-  font-family: "Times New Roman", Times, serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Findkey — Clarity before the conversation</title>
 
-.page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-}
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: "Times New Roman", Times, serif;
+    }
 
-.container {
-  max-width: 640px;
-  margin-left: 6rem; /* editorial offset, not dead center */
-}
+    /* Page layout */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
 
-.brand {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  opacity: 0.7;
-  margin-bottom: 2rem;
-}
+    .container {
+      max-width: 640px;
+      margin-left: 6rem; /* intentional editorial offset */
+      margin-right: 2rem;
+    }
 
-h1 {
-  font-size: 3rem;
-  font-weight: normal;
-  margin: 0 0 1rem 0;
-}
+    /* Brand */
+    .brand {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      opacity: 0.65;
+      margin-bottom: 2.5rem;
+    }
 
-.tagline {
-  display: block;
-  font-size: 1.1rem;
-  opacity: 0.8;
-  margin-bottom: 1.5rem;
-}
+    /* Headline */
+    h1 {
+      font-size: 3rem;
+      font-weight: normal;
+      line-height: 1.2;
+      margin: 0 0 1rem 0;
+    }
 
-.description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  max-width: 560px;
-  margin-bottom: 2rem;
-}
+    /* Tagline */
+    .tagline {
+      display: block;
+      font-size: 1.1rem;
+      font-style: italic;
+      opacity: 0.8;
+      margin-bottom: 1.75rem;
+    }
 
-.findkey-signup {
-  margin-top: 2rem;
-}
+    /* Description */
+    .description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
 
-.findkey-signup input {
-  width: 100%;
-  max-width: 420px;
-  padding: 0.75rem;
-  background: #000;
-  border: 1px solid #555;
-  color: #fff;
-  font-family: inherit;
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
-}
+    /* Signup form */
+    .findkey-signup {
+      margin-top: 1.5rem;
+    }
 
-.findkey-signup button {
-  background: #111;
-  color: #ddd;
-  border: 1px solid #444;
-  padding: 0.6rem 1.2rem;
-  font-family: inherit;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
+    .findkey-signup input[type="email"] {
+      width: 100%;
+      max-width: 420px;
+      padding: 0.75rem 0.75rem;
+      background: #000;
+      border: 1px solid #555;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-bottom: 0.75rem;
+    }
 
-.findkey-signup button:hover {
-  background: #1a1a1a;
-}
+    .findkey-signup input::placeholder {
+      color: #777;
+    }
 
-.note {
-  margin-top: 0.75rem;
-  font-size: 0.85rem;
-  opacity: 0.6;
-}
+    .findkey-signup button {
+      background: #111;
+      color: #ddd;
+      border: 1px solid #444;
+      padding: 0.6rem 1.3rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .findkey-signup button:hover {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    /* Small note */
+    .note {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    /* Mobile adjustment */
+    @media (max-width: 768px) {
+      .container {
+        margin-left: 2rem;
+        margin-right: 2rem;
+      }
+
+      h1 {
+        font-size: 2.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="brand">FINDKEY</div>
+
+      <h1>Clarity before the conversation.</h1>
+      <span class="tagline">Civilizing Discourse.</span>
+
+      <p class="description">
+        A clear, balanced view of every side of an issue — so you understand
+        where others are coming from before you speak.
+      </p>
+
+      <form
+        action="https://buttondown.com/api/emails/embed-subscribe/findkey"
+        method="post"
+        class="findkey-signup"
+        referrerpolicy="unsafe-url"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+        <br />
+        <button type="submit">Get the weekly brief</button>
+      </form>
+
+      <div class="note">Email capture coming shortly.</div>
+    </div>
+  </div>
+</body>
+</html>
