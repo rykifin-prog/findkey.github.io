@@ -26,13 +26,21 @@ function jsonHeaders(apiKey: string, bearer?: string) {
   };
 }
 
-export async function signUpWithPassword(email: string, password: string) {
+type SignUpOptions = {
+  redirectTo?: string;
+};
+
+export async function signUpWithPassword(email: string, password: string, options?: SignUpOptions) {
   const { supabaseAnonKey, supabaseUrl } = getSupabasePublicEnv();
 
   const response = await fetch(`${supabaseUrl}/auth/v1/signup`, {
     method: 'POST',
     headers: jsonHeaders(supabaseAnonKey),
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({
+      email,
+      password,
+      options: options?.redirectTo ? { emailRedirectTo: options.redirectTo } : undefined
+    })
   });
 
   return response;
