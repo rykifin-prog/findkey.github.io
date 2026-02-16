@@ -1,62 +1,57 @@
 # Findkey Product Platform
 
-Next.js App Router + TypeScript monorepo starter for Findkey's two surfaces:
+Next.js App Router + TypeScript starter for Findkey's two surfaces:
 - **Public Site** (`/(public)`): acquisition, pricing, archive, paywalled brief reading.
 - **Studio** (`/(studio)`): internal brief generation, review, and publish workflow.
 
 ## Current stack analysis
 
 - **Framework**: Next.js 14 App Router with React 18 and TypeScript.
-- **Rendering model**: Hybrid-ready (SSR/ISR/static capable), intentionally **not** forced to static export.
-- **Styling**: Global CSS + CSS Modules with a lightweight design token system in `app/globals.css`.
-- **Hosting target**: Vercel/edge-friendly, with compatibility for Supabase + Stripe serverless webhooks.
+- **Auth + DB backend**: Supabase Auth and Postgres (via REST API + SQL migrations).
+- **Rendering model**: SSR-capable app router with server actions and middleware session checks.
+- **Styling**: Global CSS + CSS Modules.
+- **Hosting target**: Vercel/edge-friendly deployment.
 
 ## Current pages/routes
 
-- `/` → Public landing page migrated from legacy `index.html` content.
-- `/studio` → Studio placeholder route for internal workflow surface.
+- `/` → Public landing page.
+- `/pricing` → Pricing and paywall upsell.
+- `/auth/sign-up` and `/auth/sign-in` → Email/password auth flows.
+- `/briefs/[slug]` → Teaser brief.
+- `/briefs/[slug]/full` → Paid full-content route protected by middleware.
+- `/studio` → Auth-protected Studio route.
 
-## What is still missing (subscriptions + Studio)
+## Supabase wiring included
 
-### Public MVP gaps
-- Pricing page with monthly vs annual plans and conversion tracking events.
-- Auth (email/password or magic link) and session management.
-- Stripe Checkout and customer portal integration.
-- Paywall logic for teaser/full brief access.
-- Brief archive index + individual brief pages.
-- Analytics instrumentation for funnel and retention.
-- Email onboarding flow for free and paid tiers.
-
-### Studio MVP gaps
-- Role-protected Studio authentication.
-- Draft queue and generation pipeline.
-- Truth-category block editor with confidence tagging.
-- Source capture/citation management.
-- Quality checklist gates before publish.
-- One-click publish workflow (status, excerpt, SEO, sitemap, email trigger).
+- **Session cookies** for access/refresh tokens.
+- **Server actions** for sign-up, sign-in, and sign-out.
+- **Middleware** refreshes sessions and enforces route protection:
+  - `/studio` requires authenticated user.
+  - `/briefs/[slug]/full` requires authenticated user + paid subscription state.
+- **Profile schema migration** in `supabase/migrations` keyed by `auth.users.id`, including `subscription_status`.
 
 ## Phase 1 roadmap (Public traction MVP)
 
-### Step 1: Conversion-ready core pages (Week 1)
+### Step 1: Conversion-ready core pages
 - Build landing + pricing pages with clear monthly/annual CTAs.
 - Add analytics events (`view_pricing`, `start_checkout`, `signup_complete`).
 - **Success metric**: ≥20% landing-to-pricing CTR.
 
-### Step 2: Subscription rails (Week 2)
+### Step 2: Subscription rails
 - Implement Supabase auth + Stripe Checkout + billing portal.
-- Add webhook handling for subscription status sync.
+- Add webhook handling for subscription status sync into `profiles.subscription_status`.
 - **Success metric**: checkout completion ≥35% of checkout starts.
 
-### Step 3: Gated content engine (Week 3)
+### Step 3: Gated content engine
 - Add archive list with teaser cards and full brief paywall.
 - Enforce access by active subscription state.
 - **Success metric**: ≥25% of signed-in free users hit paywall CTA.
 
-### Step 4: Onboarding + lifecycle (Week 4)
+### Step 4: Onboarding + lifecycle
 - Add free-tier email capture and onboarding sequence.
 - Add retention instrumentation (`d7_return`, `brief_opened`, `cancel_intent`).
 - **Success metric**: D7 retained users ≥30% of new signups.
 
 ## Environment variables
 
-See `.env.example` for planned integrations.
+See `.env.example` for setup values.
