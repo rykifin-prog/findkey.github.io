@@ -45,9 +45,9 @@ export default async function RootLayout({
             }}
             aria-label="Primary"
           >
-            <Link href="/">Public</Link>
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/studio">Studio</Link>
+            <Link href="/">Findkey</Link>
+            <Link href="/briefs">Briefs</Link>
+            <Link href="/method">Method</Link>
             <div style={{ marginLeft: 'auto' }}>
               {user ? (
                 <form action={signOutAction}>
