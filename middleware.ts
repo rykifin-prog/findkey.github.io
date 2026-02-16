@@ -3,10 +3,10 @@ import {
   applySessionCookiesToResponse,
   clearSessionCookiesFromResponse,
   getUserFromAccessToken,
-  isPaidSubscriber,
   readSessionTokens,
   refreshSession
 } from '@/lib/supabase/auth';
+import { isPaidSubscriber } from '@/lib/billing/subscriptions';
 
 const studioPathPrefix = '/studio';
 const fullBriefRoute = /^\/briefs\/[^/]+\/full$/;

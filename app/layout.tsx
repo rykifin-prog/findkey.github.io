@@ -48,11 +48,16 @@ export default async function RootLayout({
             <Link href="/">Public</Link>
             <Link href="/pricing">Pricing</Link>
             <Link href="/studio">Studio</Link>
-            <div style={{ marginLeft: 'auto' }}>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               {user ? (
-                <form action={signOutAction}>
-                  <button type="submit">Sign out</button>
-                </form>
+                <>
+                  <form method="POST" action="/api/stripe/customer-portal">
+                    <button type="submit">Manage billing</button>
+                  </form>
+                  <form action={signOutAction}>
+                    <button type="submit">Sign out</button>
+                  </form>
+                </>
               ) : (
                 <Link href="/auth/sign-in">Sign in</Link>
               )}

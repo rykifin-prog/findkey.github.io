@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabasePublicEnv, getSupabaseServiceRoleKey } from './env';
+import { getSupabasePublicEnv } from './env';
 
 export const ACCESS_TOKEN_COOKIE = 'findkey-access-token';
 export const REFRESH_TOKEN_COOKIE = 'findkey-refresh-token';
@@ -15,8 +15,6 @@ type SupabaseUser = {
   id: string;
   email?: string;
 };
-
-const paidStatuses = new Set(['active', 'trialing']);
 
 function jsonHeaders(apiKey: string, bearer?: string) {
   return {
@@ -86,25 +84,6 @@ export async function getUserFromAccessToken(accessToken: string) {
   return (await response.json()) as SupabaseUser;
 }
 
-export async function isPaidSubscriber(userId: string) {
-  const { supabaseUrl } = getSupabasePublicEnv();
-  const serviceRoleKey = getSupabaseServiceRoleKey();
-
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/profiles?select=subscription_status&id=eq.${userId}&limit=1`,
-    {
-      headers: jsonHeaders(serviceRoleKey),
-      cache: 'no-store'
-    }
-  );
-
-  if (!response.ok) {
-    return false;
-  }
-
-  const rows = (await response.json()) as Array<{ subscription_status: string | null }>;
-  return Boolean(rows[0]?.subscription_status && paidStatuses.has(rows[0].subscription_status));
-}
 
 export function applySessionCookiesToResponse(response: NextResponse, session: SupabaseSession) {
   response.cookies.set(ACCESS_TOKEN_COOKIE, session.access_token, {
