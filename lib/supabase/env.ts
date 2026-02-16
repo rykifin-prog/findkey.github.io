@@ -1,4 +1,8 @@
-const requiredPublicEnv = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'] as const;
+const requiredPublicEnv = [
+  'NEXT_PUBLIC_SITE_URL',
+  'NEXT_PUBLIC_SUPABASE_URL',
+  'NEXT_PUBLIC_SUPABASE_ANON_KEY'
+] as const;
 
 export function assertSupabasePublicEnv() {
   for (const key of requiredPublicEnv) {
@@ -12,6 +16,7 @@ export function getSupabasePublicEnv() {
   assertSupabasePublicEnv();
 
   return {
+    siteUrl: process.env.NEXT_PUBLIC_SITE_URL as string,
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   };

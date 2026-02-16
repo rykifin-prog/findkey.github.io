@@ -6,7 +6,7 @@ export default function SignUpPage({
 }: {
   searchParams?: { error?: string; next?: string };
 }) {
-  const next = searchParams?.next ?? '/';
+  const next = searchParams?.next?.startsWith('/') ? searchParams.next : '/studio';
 
   return (
     <main style={{ width: 'min(460px, 100%)', margin: '0 auto', padding: '3rem 1.5rem' }}>
