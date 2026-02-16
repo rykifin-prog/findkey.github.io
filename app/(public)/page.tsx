@@ -1,10 +1,17 @@
 import styles from './page.module.css';
+import Link from 'next/link';
 
 export default function PublicLandingPage() {
   return (
     <div className={styles.page}>
       <div className={styles.layout}>
         <section>
+          <nav className={styles.topNav}>
+            <span className={styles.active}>Home</span>
+            <Link href="/philosophy">Philosophy</Link>
+            <Link href="/pricing">Pricing</Link>
+          </nav>
+
           <div className={styles.brand}>FINDKEY</div>
 
           <h1 className={styles.heading}>Clarity before the conversation.</h1>
