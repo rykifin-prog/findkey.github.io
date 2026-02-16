@@ -23,7 +23,6 @@ export default function PublicLandingPage() {
             action="https://buttondown.com/api/emails/embed-subscribe/findkey"
             method="post"
             className={styles.signup}
-            referrerPolicy="unsafe-url"
           >
             <label htmlFor="landing-email" className="visually-hidden">
               Enter your email
