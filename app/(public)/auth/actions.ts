@@ -21,10 +21,18 @@ function getInput(formData: FormData, key: string) {
   return value.trim();
 }
 
+function normalizeNext(value: FormDataEntryValue | null, fallback = '/studio') {
+  if (typeof value !== 'string' || !value.startsWith('/')) {
+    return fallback;
+  }
+
+  return value;
+}
+
 export async function signUpAction(formData: FormData) {
   const email = getInput(formData, 'email');
   const password = getInput(formData, 'password');
-  const next = typeof formData.get('next') === 'string' ? String(formData.get('next')) : '/';
+  const next = normalizeNext(formData.get('next'));
 
   const response = await signUpWithPassword(email, password);
 
@@ -48,7 +56,7 @@ export async function signUpAction(formData: FormData) {
 export async function signInAction(formData: FormData) {
   const email = getInput(formData, 'email');
   const password = getInput(formData, 'password');
-  const next = typeof formData.get('next') === 'string' ? String(formData.get('next')) : '/';
+  const next = normalizeNext(formData.get('next'));
 
   const response = await signInWithPassword(email, password);
 

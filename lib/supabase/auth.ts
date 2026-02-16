@@ -9,6 +9,7 @@ type SupabaseSession = {
   access_token: string;
   refresh_token: string;
   expires_in: number;
+  user?: SupabaseUser;
 };
 
 type SupabaseUser = {
@@ -27,12 +28,18 @@ function jsonHeaders(apiKey: string, bearer?: string) {
 }
 
 export async function signUpWithPassword(email: string, password: string) {
-  const { supabaseAnonKey, supabaseUrl } = getSupabasePublicEnv();
+  const { siteUrl, supabaseAnonKey, supabaseUrl } = getSupabasePublicEnv();
 
   const response = await fetch(`${supabaseUrl}/auth/v1/signup`, {
     method: 'POST',
     headers: jsonHeaders(supabaseAnonKey),
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${siteUrl}/auth/callback`
+      }
+    })
   });
 
   return response;
@@ -48,6 +55,26 @@ export async function signInWithPassword(email: string, password: string) {
   });
 
   return response;
+}
+
+export async function exchangeCodeForSession(code: string) {
+  const { supabaseAnonKey, supabaseUrl } = getSupabasePublicEnv();
+  const verifierCookie =
+    cookies()
+      .getAll()
+      .find((cookie) => cookie.name.endsWith('-auth-token-code-verifier'))?.value ?? null;
+
+  const body: { auth_code: string; code_verifier?: string } = { auth_code: code };
+
+  if (verifierCookie) {
+    body.code_verifier = verifierCookie;
+  }
+
+  return fetch(`${supabaseUrl}/auth/v1/token?grant_type=pkce`, {
+    method: 'POST',
+    headers: jsonHeaders(supabaseAnonKey),
+    body: JSON.stringify(body)
+  });
 }
 
 export async function signOutWithToken(accessToken: string) {
