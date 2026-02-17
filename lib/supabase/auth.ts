@@ -14,6 +14,12 @@ type SupabaseSession = {
 type SupabaseUser = {
   id: string;
   email?: string;
+  app_metadata?: {
+    role?: string;
+  };
+  user_metadata?: {
+    role?: string;
+  };
 };
 
 const paidStatuses = new Set(['active', 'trialing']);

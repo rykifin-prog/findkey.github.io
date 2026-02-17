@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import './globals.css';
 import { ACCESS_TOKEN_COOKIE, getUserFromAccessToken } from '@/lib/supabase/auth';
+import { MainNav } from '@/components/navigation/MainNav';
 import { signOutAction } from './(public)/auth/actions';
 
 export const metadata: Metadata = {
@@ -29,6 +29,9 @@ export default async function RootLayout({
 }>) {
   const accessToken = cookies().get(ACCESS_TOKEN_COOKIE)?.value;
   const user = accessToken ? await getUserFromAccessToken(accessToken) : null;
+  const role = user?.app_metadata?.role ?? user?.user_metadata?.role;
+  const isAuthenticated = Boolean(user);
+  const isAdmin = role === 'admin';
 
   return (
     <html lang="en">
@@ -45,17 +48,13 @@ export default async function RootLayout({
             }}
             aria-label="Primary"
           >
-            <Link href="/">Public</Link>
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/studio">Studio</Link>
+            <MainNav isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
             <div style={{ marginLeft: 'auto' }}>
               {user ? (
                 <form action={signOutAction}>
                   <button type="submit">Sign out</button>
                 </form>
-              ) : (
-                <Link href="/auth/sign-in">Sign in</Link>
-              )}
+              ) : null}
             </div>
           </nav>
         </header>
