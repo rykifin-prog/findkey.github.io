@@ -1,0 +1,33 @@
+.nav {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.link {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  background: var(--color-surface);
+}
+
+.active {
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+}
