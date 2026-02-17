@@ -15,10 +15,6 @@ export default function PublicLandingPage() {
             are coming from before you speak.
           </p>
 
-          <p className={styles.pricing}>
-            Full access membership: <strong className={styles.priceStrong}>$10/month</strong>.
-          </p>
-
           <form
             action="https://buttondown.com/api/emails/embed-subscribe/findkey"
             method="post"
@@ -37,13 +33,9 @@ export default function PublicLandingPage() {
             />
             <br />
             <button type="submit" className={styles.signupButton}>
-              Subscribe for $10/month
+              Become a member
             </button>
           </form>
-
-          <div className={styles.note}>
-            Enter your email to start your paid subscription at $10/month.
-          </div>
         </section>
 
         <aside className={styles.previewCard} aria-label="Sample email preview">

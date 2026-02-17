@@ -45,16 +45,18 @@ export default async function RootLayout({
             }}
             aria-label="Primary"
           >
-            <Link href="/">Public</Link>
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/studio">Studio</Link>
-            <div style={{ marginLeft: 'auto' }}>
+            <Link href="/">Home</Link>
+            <Link href="/method">Method</Link>
+            <Link href="/briefs">Briefs</Link>
+            <Link href="/philosophy">Philosophy</Link>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 'var(--space-6)' }}>
+              <Link href="/archive">Archive</Link>
               {user ? (
                 <form action={signOutAction}>
                   <button type="submit">Sign out</button>
                 </form>
               ) : (
-                <Link href="/auth/sign-in">Sign in</Link>
+                <Link href="/auth/sign-in">Log In</Link>
               )}
             </div>
           </nav>
