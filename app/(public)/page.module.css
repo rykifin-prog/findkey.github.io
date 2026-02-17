@@ -44,16 +44,7 @@
   opacity: 0.9;
 }
 
-.pricing {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--space-8);
-  opacity: 0.95;
-}
 
-.priceStrong {
-  font-size: var(--font-size-xl);
-  color: var(--color-text-primary);
-}
 
 .signup {
   margin-top: var(--space-6);
@@ -76,6 +67,8 @@
 }
 
 .signupButton {
+  display: inline-block;
+  margin-top: var(--space-2);
   background: #111;
   color: #ddd;
   border: 1px solid #444;
@@ -91,12 +84,6 @@
   color: var(--color-text-primary);
 }
 
-.note {
-  margin-top: var(--space-3);
-  font-size: 0.85rem;
-  opacity: 0.55;
-  max-width: 420px;
-}
 
 .previewCard {
   border: 1px solid var(--color-border-strong);
