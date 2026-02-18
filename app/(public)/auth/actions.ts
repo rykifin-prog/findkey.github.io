@@ -9,7 +9,8 @@ import {
   signUpWithPassword,
   ACCESS_TOKEN_COOKIE
 } from '@/lib/supabase/auth';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
+import { getSiteUrl } from '@/lib/get-site-url';
 
 function getInput(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -26,7 +27,11 @@ export async function signUpAction(formData: FormData) {
   const password = getInput(formData, 'password');
   const next = typeof formData.get('next') === 'string' ? String(formData.get('next')) : '/';
 
-  const response = await signUpWithPassword(email, password);
+  const siteUrl = getSiteUrl(headers());
+
+  const response = await signUpWithPassword(email, password, {
+    redirectTo: `${siteUrl}/auth/callback`
+  });
 
   if (!response.ok) {
     const body = await response.text();
