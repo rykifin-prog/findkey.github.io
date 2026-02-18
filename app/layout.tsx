@@ -34,30 +34,38 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <header style={{ borderBottom: '1px solid var(--color-border)' }}>
-          <nav
+          <div
             style={{
               width: 'min(1200px, 100%)',
               margin: '0 auto',
               padding: 'var(--space-4) var(--space-6)',
               display: 'flex',
-              gap: 'var(--space-6)',
+              gap: 'var(--space-4)',
               alignItems: 'center'
             }}
-            aria-label="Primary"
           >
-            <Link href="/">Public</Link>
-            <Link href="/pricing">Pricing</Link>
-            <Link href="/studio">Studio</Link>
+            <nav
+              style={{
+                display: 'flex',
+                gap: 'var(--space-4)',
+                alignItems: 'center'
+              }}
+              aria-label="Primary"
+            >
+              <Link href="/">Home</Link>
+              <Link href="/method">Method</Link>
+              <Link href="/briefs">Briefs</Link>
+              <Link href="/philosophy">Philosophy</Link>
+              <Link href="/archive">Archive</Link>
+            </nav>
             <div style={{ marginLeft: 'auto' }}>
               {user ? (
                 <form action={signOutAction}>
                   <button type="submit">Sign out</button>
                 </form>
-              ) : (
-                <Link href="/auth/sign-in">Sign in</Link>
-              )}
+              ) : null}
             </div>
-          </nav>
+          </div>
         </header>
         {children}
       </body>

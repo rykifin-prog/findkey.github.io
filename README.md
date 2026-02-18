@@ -1,8 +1,7 @@
 # Findkey Product Platform
 
 Next.js App Router + TypeScript starter for Findkey's two surfaces:
-- **Public Site** (`/(public)`): acquisition, pricing, archive, paywalled brief reading.
-- **Studio** (`/(studio)`): internal brief generation, review, and publish workflow.
+- **Public Site** (`/(public)`): acquisition, archive, and paywalled brief reading.
 
 ## Current stack analysis
 
@@ -15,27 +14,24 @@ Next.js App Router + TypeScript starter for Findkey's two surfaces:
 ## Current pages/routes
 
 - `/` → Public landing page.
-- `/pricing` → Pricing and paywall upsell.
 - `/auth/sign-up` and `/auth/sign-in` → Email/password auth flows.
 - `/briefs/[slug]` → Teaser brief.
 - `/briefs/[slug]/full` → Paid full-content route protected by middleware.
-- `/studio` → Auth-protected Studio route.
 
 ## Supabase wiring included
 
 - **Session cookies** for access/refresh tokens.
 - **Server actions** for sign-up, sign-in, and sign-out.
 - **Middleware** refreshes sessions and enforces route protection:
-  - `/studio` requires authenticated user.
   - `/briefs/[slug]/full` requires authenticated user + paid subscription state.
 - **Profile schema migration** in `supabase/migrations` keyed by `auth.users.id`, including `subscription_status`.
 
 ## Phase 1 roadmap (Public traction MVP)
 
 ### Step 1: Conversion-ready core pages
-- Build landing + pricing pages with clear monthly/annual CTAs.
+- Build landing and archive entry pages with clear conversion pathways.
 - Add analytics events (`view_pricing`, `start_checkout`, `signup_complete`).
-- **Success metric**: ≥20% landing-to-pricing CTR.
+- **Success metric**: ≥20% landing-to-sign-up CTR.
 
 ### Step 2: Subscription rails
 - Implement Supabase auth + Stripe Checkout + billing portal.
