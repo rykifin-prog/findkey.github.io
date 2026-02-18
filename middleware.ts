@@ -8,7 +8,6 @@ import {
   refreshSession
 } from '@/lib/supabase/auth';
 
-const studioPathPrefix = '/studio';
 const fullBriefRoute = /^\/briefs\/[^/]+\/full$/;
 
 function buildRedirect(request: NextRequest, pathname: string, params?: Record<string, string>) {
@@ -27,10 +26,9 @@ function buildRedirect(request: NextRequest, pathname: string, params?: Record<s
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isStudioRoute = pathname.startsWith(studioPathPrefix);
   const isPaidBriefRoute = fullBriefRoute.test(pathname);
 
-  if (!isStudioRoute && !isPaidBriefRoute) {
+  if (!isPaidBriefRoute) {
     return NextResponse.next();
   }
 
@@ -57,7 +55,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!user) {
-    if (isStudioRoute || isPaidBriefRoute) {
+    if (isPaidBriefRoute) {
       return buildRedirect(request, '/auth/sign-in', { next: pathname });
     }
 
@@ -68,7 +66,7 @@ export async function middleware(request: NextRequest) {
     const paid = await isPaidSubscriber(user.id);
 
     if (!paid) {
-      return buildRedirect(request, '/pricing', { paywall: pathname });
+      return buildRedirect(request, '/briefs', { paywall: pathname });
     }
   }
 
@@ -76,5 +74,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/studio/:path*', '/briefs/:path*/full']
+  matcher: ['/briefs/:path*/full']
 };
