@@ -106,6 +106,23 @@ export async function isPaidSubscriber(userId: string) {
   return Boolean(rows[0]?.subscription_status && paidStatuses.has(rows[0].subscription_status));
 }
 
+export async function isAdminUser(userId: string) {
+  const { supabaseUrl } = getSupabasePublicEnv();
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/profiles?select=role&id=eq.${userId}&limit=1`, {
+    headers: jsonHeaders(serviceRoleKey),
+    cache: 'no-store'
+  });
+
+  if (!response.ok) {
+    return false;
+  }
+
+  const rows = (await response.json()) as Array<{ role: string | null }>;
+  return rows[0]?.role === 'admin';
+}
+
 export function applySessionCookiesToResponse(response: NextResponse, session: SupabaseSession) {
   response.cookies.set(ACCESS_TOKEN_COOKIE, session.access_token, {
     httpOnly: true,
