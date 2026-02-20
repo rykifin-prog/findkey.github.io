@@ -3,6 +3,7 @@ import {
   applySessionCookiesToResponse,
   clearSessionCookiesFromResponse,
   getUserFromAccessToken,
+  isAdminUser,
   isPaidSubscriber,
   readSessionTokens,
   refreshSession
@@ -27,8 +28,9 @@ function buildRedirect(request: NextRequest, pathname: string, params?: Record<s
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isPaidBriefRoute = fullBriefRoute.test(pathname);
+  const isEditorRoute = pathname.startsWith('/editor') || pathname.startsWith('/api/editor');
 
-  if (!isPaidBriefRoute) {
+  if (!isPaidBriefRoute && !isEditorRoute) {
     return NextResponse.next();
   }
 
@@ -55,7 +57,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!user) {
-    if (isPaidBriefRoute) {
+    if (isPaidBriefRoute || isEditorRoute) {
       return buildRedirect(request, '/auth/sign-in', { next: pathname });
     }
 
@@ -70,9 +72,17 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (isEditorRoute) {
+    const admin = await isAdminUser(user.id);
+
+    if (!admin) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+
   return response;
 }
 
 export const config = {
-  matcher: ['/briefs/:path*/full']
+  matcher: ['/briefs/:path*/full', '/editor/:path*', '/api/editor/:path*']
 };
