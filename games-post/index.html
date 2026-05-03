@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Floor Just Collapsed</title>
+<meta name="description" content="Three kids. Three games. None of them can write a line of code.">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface-2: #1c1c26;
+    --border: #2a2a38;
+    --text: #e8e8ee;
+    --text-dim: #9090a0;
+    --accent: #7c3aed;
+    --accent-2: #ec4899;
+    --gold: #fbbf24;
+    --green: #34d399;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 120px;
+  }
+  .meta {
+    color: var(--text-dim);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+  .subtitle {
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+  h2 {
+    font-size: 28px;
+    margin: 56px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #d4d4dc;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 20px;
+    margin: 28px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 19px;
+  }
+  .game-block {
+    margin: 48px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .game-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .game-title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .game-author {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .game-frame-wrap {
+    position: relative;
+    width: 100%;
+    background: #000;
+  }
+  .game-frame-wrap iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+  }
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(236,72,153,0.15)), rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    z-index: 5;
+  }
+  .play-overlay:hover { background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(236,72,153,0.25)), rgba(0,0,0,0.85); }
+  .play-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 0 40px rgba(124,58,237,0.4);
+  }
+  .play-icon::before {
+    content: '';
+    border-style: solid;
+    border-width: 16px 0 16px 24px;
+    border-color: transparent transparent transparent white;
+    margin-left: 6px;
+  }
+  .play-label {
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+  }
+  .play-sublabel {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .game-stats {
+    padding: 12px 24px;
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .game-stats span strong { color: var(--text); font-weight: 600; }
+
+  /* Voting widget */
+  .vote-block {
+    margin: 64px 0 32px;
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(236,72,153,0.08));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .vote-q {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .vote-sub {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .vote-options { display: flex; flex-direction: column; gap: 12px; }
+  .vote-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .vote-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .vote-btn:disabled { cursor: default; opacity: 0.95; }
+  .vote-btn .label { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; }
+  .vote-btn .pct { font-weight: 600; color: var(--gold); display: none; }
+  .vote-btn .bar {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(124,58,237,0.3), rgba(236,72,153,0.2));
+    transition: width 0.6s ease-out;
+    z-index: 1;
+  }
+  .vote-btn.voted .pct { display: inline; }
+  .vote-btn.your-pick { border-color: var(--gold); }
+  .vote-btn.your-pick::after {
+    content: '✓ your pick';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    z-index: 3;
+  }
+  .vote-btn.voted.your-pick .pct { margin-right: 80px; }
+  .vote-thanks {
+    margin-top: 20px;
+    color: var(--green);
+    font-size: 14px;
+    text-align: center;
+    display: none;
+  }
+  .vote-thanks.show { display: block; }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  @media (max-width: 600px) {
+    .game-frame-wrap iframe { height: 480px; }
+    .game-stats { flex-wrap: wrap; gap: 12px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="container">
+
+  <div class="meta">Essay · 2026</div>
+  <h1>The Floor Just Collapsed</h1>
+  <p class="subtitle">Three kids in my house shipped video games this month. None of them can write a line of code. The youngest is six.</p>
+
+  <p>The dominant story about AI right now is that it is making us dumber. That it offloads thinking, erodes craft, and produces a generation of people who outsource the hard parts and atrophy on contact.</p>
+
+  <p>I want to offer the opposite reading.</p>
+
+  <p>Over the last few weeks, three kids in my house each built a video game. They designed the mechanics. They named the characters. They chose the rules. They iterated until each game felt the way they wanted it to feel. None of them can write a line of code. They worked entirely through prompts.</p>
+
+  <p>The games are below. Play them.</p>
+
+  <h2>Michael's game</h2>
+  <p>Michael built a sandbox. There is no goal. You place blocks. You can spawn aliens. You can detonate TNT. There is a day-night cycle. There are whale sharks and shooting stars and a character he named Doofus.</p>
+  <p>It is not a game in the traditional sense. It is a tool for making things. He built a creative environment, then released it into the world and told us to figure out what to do with it.</p>
+
+  <div class="game-block">
+    <div class="game-header">
+      <div>
+        <div class="game-title">The Awesome Game</div>
+        <div class="game-author">by Michael</div>
+      </div>
+    </div>
+    <div class="game-frame-wrap">
+      <div class="play-overlay" data-game="michael">
+        <div class="play-icon"></div>
+        <div class="play-label">Play</div>
+        <div class="play-sublabel">Loads on tap. Best on desktop or tablet.</div>
+      </div>
+      <iframe data-src="games/michael.html" title="The Awesome Game by Michael"></iframe>
+    </div>
+    <div class="game-stats" data-stats="michael">
+      <span><strong class="plays">0</strong> plays</span>
+      <span><strong class="time">0m</strong> total play time</span>
+      <span><strong class="avg">0s</strong> avg session</span>
+    </div>
+  </div>
+
+  <h2>Dagny's game</h2>
+  <p>Dagny built an open world. You explore. You collect gems. You find a chest. There is a portal. There is a mini-game. The world stretches three hundred and sixty tiles wide and was generated procedurally, though she would not use that phrase.</p>
+  <p>She built a journey. The point is not to win. The point is to go.</p>
+
+  <div class="game-block">
+    <div class="game-header">
+      <div>
+        <div class="game-title">Dagny's Adventure</div>
+        <div class="game-author">by Dagny</div>
+      </div>
+    </div>
+    <div class="game-frame-wrap">
+      <div class="play-overlay" data-game="dagny">
+        <div class="play-icon"></div>
+        <div class="play-label">Play</div>
+        <div class="play-sublabel">Loads on tap. Touch and keyboard controls.</div>
+      </div>
+      <iframe data-src="games/dagny.html" title="Dagny's Adventure"></iframe>
+    </div>
+    <div class="game-stats" data-stats="dagny">
+      <span><strong class="plays">0</strong> plays</span>
+      <span><strong class="time">0m</strong> total play time</span>
+      <span><strong class="avg">0s</strong> avg session</span>
+    </div>
+  </div>
+
+  <h2>Sofia's game</h2>
+  <p>Sofia built a platformer. There is a cast. Steve and Alex and Princess and Cow are food. Bunnah cannot be eaten because Bunnah is magic. Doofus is worth fifty bonus points.</p>
+  <p>She did not build a game. She built a society with rules, and then she built a platformer to enforce them.</p>
+
+  <div class="game-block">
+    <div class="game-header">
+      <div>
+        <div class="game-title">Sofia's Space Game</div>
+        <div class="game-author">by Sofia</div>
+      </div>
+    </div>
+    <div class="game-frame-wrap">
+      <div class="play-overlay" data-game="sofia">
+        <div class="play-icon"></div>
+        <div class="play-label">Play</div>
+        <div class="play-sublabel">Loads on tap. Arrow keys and space bar.</div>
+      </div>
+      <iframe data-src="games/sofia.html" title="Sofia's Space Game"></iframe>
+    </div>
+    <div class="game-stats" data-stats="sofia">
+      <span><strong class="plays">0</strong> plays</span>
+      <span><strong class="time">0m</strong> total play time</span>
+      <span><strong class="avg">0s</strong> avg session</span>
+    </div>
+  </div>
+
+  <h2>What I noticed</h2>
+
+  <p>Three kids, three completely different games. That is the part that surprised me.</p>
+
+  <p>I had assumed, before this experiment, that AI tools would flatten creative output. That if you handed three children the same prompt-to-game capability, they would converge on something similar. The opposite happened. Given a tool that removed the friction of building, each kid revealed what they actually thought a game was for.</p>
+
+  <p>Michael wanted a creative environment with no rules. Dagny wanted a world to explore. Sofia wanted a cast of characters with strong opinions about who can and cannot be eaten.</p>
+
+  <p>The AI did not make them creative. It made them legible. It collapsed the gap between what was already in their heads and what existed in the world. For most of human history that gap was the entire game. You had an idea, and then you spent years acquiring the skills to ship it, and somewhere in the middle most ideas died of attrition.</p>
+
+  <p>That gap is collapsing. Not gone. Collapsing. And the people who notice first will define what the next decade looks like.</p>
+
+  <h2>Cast your vote</h2>
+
+  <div class="vote-block">
+    <div class="vote-q">Which one did you actually want to keep playing?</div>
+    <div class="vote-sub">One vote per visitor. Results revealed after you pick.</div>
+    <div class="vote-options">
+      <button class="vote-btn" data-vote="michael">
+        <div class="bar"></div>
+        <div class="label"><span>The Awesome Game · Michael</span><span class="pct"></span></div>
+      </button>
+      <button class="vote-btn" data-vote="dagny">
+        <div class="bar"></div>
+        <div class="label"><span>Dagny's Adventure · Dagny</span><span class="pct"></span></div>
+      </button>
+      <button class="vote-btn" data-vote="sofia">
+        <div class="bar"></div>
+        <div class="label"><span>Sofia's Space Game · Sofia</span><span class="pct"></span></div>
+      </button>
+    </div>
+    <div class="vote-thanks">Thanks. Come back in two weeks for the breakdown.</div>
+  </div>
+
+  <h2>The interesting question</h2>
+
+  <p>The interesting question is not whether AI makes us lazy. It is who gets to be a builder when the cost of building approaches zero.</p>
+
+  <p>The kids who shipped these games will graduate into a world where the friction between idea and artifact is a fraction of what it was for any prior generation. They will not learn to code in the way I had to. They will learn to specify, to iterate, to know when something is wrong, to know when something is done. Those are different muscles, and they are the muscles that matter when the building part is cheap.</p>
+
+  <p>The destructive-force-of-nature reading of AI is not wrong about everything. It is wrong about the direction of the arrow. The thing that is collapsing is not human capability. It is the floor under who gets to build. And when the floor collapses, more people end up on the field.</p>
+
+  <p>Including, apparently, my six-year-old.</p>
+
+  <footer>
+    Ryan Kinskey · CEO, Motionworks AI
+  </footer>
+
+</article>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// Lazy iframe load (click-to-play)
+// ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.play-overlay').forEach(function(overlay){
+  overlay.addEventListener('click', function(){
+    var wrap = overlay.parentElement;
+    var iframe = wrap.querySelector('iframe');
+    if (iframe.dataset.src && !iframe.src) {
+      iframe.src = iframe.dataset.src;
+    }
+    overlay.style.opacity = '0';
+    setTimeout(function(){ overlay.style.display = 'none'; }, 300);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────
+// Telemetry collection from games (postMessage)
+// In production, also POST to your backend endpoint.
+// For now, aggregate in localStorage so the stats panel shows movement.
+// ─────────────────────────────────────────────────────────────
+var TELEMETRY_KEY = 'gamePostTelemetryV1';
+var BACKEND_URL = null; // Set this to your endpoint when ready, e.g. 'https://api.example.com/telemetry'
+
+function loadStats() {
+  try {
+    return JSON.parse(localStorage.getItem(TELEMETRY_KEY)) || {};
+  } catch(e) { return {}; }
+}
+function saveStats(s) {
+  try { localStorage.setItem(TELEMETRY_KEY, JSON.stringify(s)); } catch(e) {}
+}
+function ensureGame(stats, id) {
+  if (!stats[id]) stats[id] = { plays: 0, totalMs: 0, sessions: [] };
+  return stats[id];
+}
+
+function formatTime(ms) {
+  if (ms < 60000) return Math.round(ms/1000) + 's';
+  if (ms < 3600000) return Math.round(ms/60000) + 'm';
+  return (ms/3600000).toFixed(1) + 'h';
+}
+
+function refreshStatsUI() {
+  var stats = loadStats();
+  document.querySelectorAll('[data-stats]').forEach(function(el){
+    var id = el.dataset.stats;
+    var s = stats[id] || { plays: 0, totalMs: 0 };
+    el.querySelector('.plays').textContent = s.plays;
+    el.querySelector('.time').textContent = formatTime(s.totalMs);
+    el.querySelector('.avg').textContent = s.plays ? formatTime(s.totalMs / s.plays) : '0s';
+  });
+}
+
+window.addEventListener('message', function(ev){
+  var d = ev.data;
+  if (!d || d.type !== 'game-telemetry') return;
+  var stats = loadStats();
+  var g = ensureGame(stats, d.gameId);
+
+  if (d.event === 'start') {
+    g.plays += 1;
+  } else if (d.event === 'end' || d.event === 'heartbeat') {
+    // Use latest sessionMs from this game session
+    g._currentSession = d.sessionMs || 0;
+  }
+  if (d.event === 'end') {
+    g.totalMs += (d.finalMs || g._currentSession || 0);
+    delete g._currentSession;
+  }
+  saveStats(stats);
+  refreshStatsUI();
+
+  // Optional: forward to backend
+  if (BACKEND_URL) {
+    try {
+      navigator.sendBeacon ? navigator.sendBeacon(BACKEND_URL, JSON.stringify(d))
+                           : fetch(BACKEND_URL, { method: 'POST', body: JSON.stringify(d), keepalive: true });
+    } catch(e) {}
+  }
+});
+
+// Periodically commit any in-flight session time so stats feel alive
+setInterval(function(){
+  var stats = loadStats();
+  var changed = false;
+  Object.keys(stats).forEach(function(id){
+    if (stats[id]._currentSession) {
+      // Don't double-count; just refresh display from heartbeat
+      changed = true;
+    }
+  });
+  if (changed) refreshStatsUI();
+}, 5000);
+
+refreshStatsUI();
+
+// ─────────────────────────────────────────────────────────────
+// Voting (one vote per visitor, localStorage)
+// ─────────────────────────────────────────────────────────────
+var VOTE_KEY = 'gamePostVoteV1';
+var VOTE_TALLY_KEY = 'gamePostTallyV1'; // local-only demo tally
+
+function loadTally() {
+  try { return JSON.parse(localStorage.getItem(VOTE_TALLY_KEY)) || { michael: 0, dagny: 0, sofia: 0 }; }
+  catch(e) { return { michael: 0, dagny: 0, sofia: 0 }; }
+}
+function saveTally(t) {
+  try { localStorage.setItem(VOTE_TALLY_KEY, JSON.stringify(t)); } catch(e) {}
+}
+
+function showResults(yourPick) {
+  var tally = loadTally();
+  var total = tally.michael + tally.dagny + tally.sofia;
+  document.querySelectorAll('.vote-btn').forEach(function(btn){
+    var id = btn.dataset.vote;
+    var pct = total ? Math.round((tally[id] / total) * 100) : 0;
+    btn.classList.add('voted');
+    btn.disabled = true;
+    btn.querySelector('.pct').textContent = pct + '%';
+    btn.querySelector('.bar').style.width = pct + '%';
+    if (id === yourPick) btn.classList.add('your-pick');
+  });
+  document.querySelector('.vote-thanks').classList.add('show');
+}
+
+document.querySelectorAll('.vote-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    if (localStorage.getItem(VOTE_KEY)) return;
+    var pick = btn.dataset.vote;
+    var tally = loadTally();
+    tally[pick] = (tally[pick] || 0) + 1;
+    saveTally(tally);
+    try { localStorage.setItem(VOTE_KEY, pick); } catch(e) {}
+
+    // Optional: forward to backend
+    if (BACKEND_URL) {
+      try {
+        var payload = JSON.stringify({ type: 'vote', pick: pick, ts: Date.now() });
+        navigator.sendBeacon ? navigator.sendBeacon(BACKEND_URL, payload)
+                             : fetch(BACKEND_URL, { method: 'POST', body: payload, keepalive: true });
+      } catch(e) {}
+    }
+    showResults(pick);
+  });
+});
+
+// If already voted, show results immediately
+var prior = localStorage.getItem(VOTE_KEY);
+if (prior) showResults(prior);
+</script>
+
+</body>
+</html>
